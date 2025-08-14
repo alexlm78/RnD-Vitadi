@@ -5,6 +5,18 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OracleConn+BGJobs", "OracleConn+BGJobs\OracleConn+BGJobs.csproj", "{544511C6-E72B-48EF-8612-8BEA380C2B0B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-TaskManager-ConfigDI", "01-TaskManager-ConfigDI", "{99D3C274-6E41-402B-82A2-165D66A4C368}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Api", "01-TaskManager-ConfigDI\TaskManager.Api\TaskManager.Api.csproj", "{0AA6AB43-4DAE-44BD-8213-7E72A707D1E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-BlogApi-EntityFramework", "02-BlogApi-EntityFramework", "{0C8F8DA6-9BCD-47FF-9431-8184002B25D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApi", "02-BlogApi-EntityFramework\BlogApi\BlogApi.csproj", "{0CCD7FC4-84B7-4B69-8F87-388F0E8573D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-ImageProcessor-Hangfire", "03-ImageProcessor-Hangfire", "{ABD2051C-170F-4B82-926E-25E33B430593}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Api", "03-ImageProcessor-Hangfire\ImageProcessor.Api\ImageProcessor.Api.csproj", "{F39E6716-124E-44C9-8959-44E9111C38F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +27,18 @@ Global
 		{544511C6-E72B-48EF-8612-8BEA380C2B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{544511C6-E72B-48EF-8612-8BEA380C2B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{544511C6-E72B-48EF-8612-8BEA380C2B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA6AB43-4DAE-44BD-8213-7E72A707D1E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA6AB43-4DAE-44BD-8213-7E72A707D1E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA6AB43-4DAE-44BD-8213-7E72A707D1E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA6AB43-4DAE-44BD-8213-7E72A707D1E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CCD7FC4-84B7-4B69-8F87-388F0E8573D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CCD7FC4-84B7-4B69-8F87-388F0E8573D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CCD7FC4-84B7-4B69-8F87-388F0E8573D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CCD7FC4-84B7-4B69-8F87-388F0E8573D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39E6716-124E-44C9-8959-44E9111C38F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39E6716-124E-44C9-8959-44E9111C38F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39E6716-124E-44C9-8959-44E9111C38F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39E6716-124E-44C9-8959-44E9111C38F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,5 +54,10 @@ Global
 		SccProjectUniqueName1 = OracleConn+BGJobs\\OracleConn+BGJobs.csproj
 		SccProjectName1 = OracleConn+BGJobs
 		SccLocalPath1 = OracleConn+BGJobs
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0AA6AB43-4DAE-44BD-8213-7E72A707D1E7} = {99D3C274-6E41-402B-82A2-165D66A4C368}
+		{0CCD7FC4-84B7-4B69-8F87-388F0E8573D2} = {0C8F8DA6-9BCD-47FF-9431-8184002B25D1}
+		{F39E6716-124E-44C9-8959-44E9111C38F8} = {ABD2051C-170F-4B82-926E-25E33B430593}
 	EndGlobalSection
 EndGlobal
