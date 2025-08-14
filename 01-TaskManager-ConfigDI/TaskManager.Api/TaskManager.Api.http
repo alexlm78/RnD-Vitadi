@@ -1,0 +1,131 @@
+### TaskManager API - Ejemplos de uso
+
+@baseUrl = https://localhost:7xxx
+@contentType = application/json
+
+### Health Check de la aplicación
+GET {{baseUrl}}/health
+
+### Health Check del controlador (con configuración)
+GET {{baseUrl}}/api/tasks/health
+
+### Obtener estadísticas de tareas (funcionalidad configurable)
+GET {{baseUrl}}/api/tasks/stats
+
+### Obtener configuración completa (solo desarrollo/staging)
+GET {{baseUrl}}/config
+
+### Probar dependency injection (solo desarrollo/staging)
+GET {{baseUrl}}/di-test
+
+### Obtener todas las tareas
+GET {{baseUrl}}/api/tasks
+
+### Obtener una tarea específica
+GET {{baseUrl}}/api/tasks/1
+
+### Crear una nueva tarea
+POST {{baseUrl}}/api/tasks
+Content-Type: {{contentType}}
+
+{
+  "title": "Aprender Dependency Injection",
+  "description": "Estudiar los conceptos de DI en .NET 8 y practicar con ejemplos",
+  "priority": 3
+}
+
+### Actualizar una tarea
+PUT {{baseUrl}}/api/tasks/1
+Content-Type: {{contentType}}
+
+{
+  "title": "Configurar proyecto .NET 8 - COMPLETADO",
+  "description": "Crear un nuevo proyecto Web API con .NET 8 y configurar las dependencias básicas",
+  "isCompleted": true,
+  "priority": 3
+}
+
+### Obtener tareas completadas
+GET {{baseUrl}}/api/tasks/status/true
+
+### Obtener tareas pendientes
+GET {{baseUrl}}/api/tasks/status/false
+
+### Obtener tareas de alta prioridad
+GET {{baseUrl}}/api/tasks/priority/3
+
+### Obtener tareas de prioridad media
+GET {{baseUrl}}/api/tasks/priority/2
+
+### Obtener tareas de baja prioridad
+GET {{baseUrl}}/api/tasks/priority/1
+
+### Eliminar una tarea
+DELETE {{baseUrl}}/api/tasks/3
+
+### Ejemplo de validación - Título vacío (debe fallar)
+POST {{baseUrl}}/api/tasks
+Content-Type: {{contentType}}
+
+{
+  "title": "",
+  "description": "Esta tarea debería fallar por título vacío",
+  "priority": 2
+}
+
+### Ejemplo de validación - Prioridad inválida (debe fallar)
+POST {{baseUrl}}/api/tasks
+Content-Type: {{contentType}}
+
+{
+  "title": "Tarea con prioridad inválida",
+  "description": "Esta tarea debería fallar por prioridad fuera de rango",
+  "priority": 5
+}
+
+### Ejemplo de validación - Título con caracteres no permitidos (debe fallar)
+POST {{baseUrl}}/api/tasks
+Content-Type: {{contentType}}
+
+{
+  "title": "Tarea con <script>alert('test')</script>",
+  "description": "Esta tarea debería fallar por caracteres no permitidos",
+  "priority": 2
+}
+
+### Ejemplo de validación - Palabra prohibida (debe fallar)
+POST {{baseUrl}}/api/tasks
+Content-Type: {{contentType}}
+
+{
+  "title": "Esta es una tarea spam",
+  "description": "Esta tarea debería fallar por contener palabra prohibida",
+  "priority": 2
+}
+
+### Ejemplo de advertencia - Tarea de alta prioridad sin descripción
+POST {{baseUrl}}/api/tasks
+Content-Type: {{contentType}}
+
+{
+  "title": "Tarea urgente",
+  "priority": 3
+}
+
+### Ejemplo de filtro con validación - Prioridad inválida (debe fallar)
+GET {{baseUrl}}/api/tasks/priority/5
+
+### Buscar tareas por texto
+GET {{baseUrl}}/api/tasks/search?searchTerm=JWT
+
+### Buscar tareas - término muy corto (debe fallar)
+GET {{baseUrl}}/api/tasks/search?searchTerm=a
+
+### Obtener tareas con paginación - primera página
+GET {{baseUrl}}/api/tasks/paged?page=1&pageSize=5
+
+### Obtener tareas con paginación - segunda página
+GET {{baseUrl}}/api/tasks/paged?page=2&pageSize=3
+
+### Paginación con parámetros inválidos (debe fallar)
+GET {{baseUrl}}/api/tasks/paged?page=0&pageSize=100
