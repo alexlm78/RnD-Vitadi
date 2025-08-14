@@ -1,0 +1,83 @@
+@ImageProcessor.Api_HostAddress = http://localhost:5084
+
+### Health Check
+GET {{ImageProcessor.Api_HostAddress}}/api/Image/health
+
+### Upload and Process Image (Thumbnail)
+POST {{ImageProcessor.Api_HostAddress}}/api/Image/upload
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="sample.jpg"
+Content-Type: image/jpeg
+
+< ./sample-image.jpg
+--boundary
+Content-Disposition: form-data; name="operation"
+
+GenerateThumbnails
+--boundary
+Content-Disposition: form-data; name="parameters[size]"
+
+200
+--boundary--
+
+### Resize Image Job
+POST {{ImageProcessor.Api_HostAddress}}/api/Image/resize
+Content-Type: application/json
+
+{
+  "imagePath": "uploads/sample.jpg",
+  "outputPath": "processed/resized_sample.jpg",
+  "width": 800,
+  "height": 600,
+  "maintainAspectRatio": true
+}
+
+### Apply Filters Job
+POST {{ImageProcessor.Api_HostAddress}}/api/Image/apply-filters
+Content-Type: application/json
+
+{
+  "imagePath": "uploads/sample.jpg",
+  "outputPath": "processed/filtered_sample.jpg",
+  "filters": ["Grayscale", "Sepia"]
+}
+
+### Generate Thumbnail Job
+POST {{ImageProcessor.Api_HostAddress}}/api/Image/thumbnail
+Content-Type: application/json
+
+{
+  "imagePath": "uploads/sample.jpg",
+  "outputPath": "processed/thumb_sample.jpg",
+  "size": 150
+}
+
+### Batch Processing Job
+POST {{ImageProcessor.Api_HostAddress}}/api/Image/batch
+Content-Type: application/json
+
+{
+  "imagePaths": [
+    "uploads/image1.jpg",
+    "uploads/image2.jpg",
+    "uploads/image3.jpg"
+  ],
+  "outputDirectory": "processed/batch",
+  "operation": "GenerateThumbnails",
+  "parameters": {
+    "size": 200
+  }
+}
+
+### Trigger Cleanup Job
+POST {{ImageProcessor.Api_HostAddress}}/api/Image/cleanup
+
+### Get Job Status
+GET {{ImageProcessor.Api_HostAddress}}/api/Image/status/{{jobId}}
+
+### Access Hangfire Dashboard
+GET {{ImageProcessor.Api_HostAddress}}/hangfire
+
+###
