@@ -1,0 +1,34 @@
+@ResilientClient.Api_HostAddress = https://localhost:7070
+
+### Health Check
+GET {{ResilientClient.Api_HostAddress}}/health
+
+### Ping
+GET {{ResilientClient.Api_HostAddress}}/ping
+
+### Obtener clima actual para Madrid
+GET {{ResilientClient.Api_HostAddress}}/api/weather/current/Madrid
+
+### Obtener clima resiliente para Barcelona
+GET {{ResilientClient.Api_HostAddress}}/api/weather/resilient/Barcelona
+
+### Obtener clima para múltiples ciudades
+GET {{ResilientClient.Api_HostAddress}}/api/weather/multiple?cities=Madrid,Barcelona,Valencia,Sevilla
+
+### Obtener últimas noticias generales
+GET {{ResilientClient.Api_HostAddress}}/api/news/latest
+
+### Obtener noticias de tecnología
+GET {{ResilientClient.Api_HostAddress}}/api/news/latest?category=technology
+
+### Obtener noticias resilientes
+GET {{ResilientClient.Api_HostAddress}}/api/news/resilient?category=business
+
+### Obtener noticias por múltiples categorías
+GET {{ResilientClient.Api_HostAddress}}/api/news/by-categories?categories=technology,business,health
+
+### Obtener categorías disponibles
+GET {{ResilientClient.Api_HostAddress}}/api/news/categories
+
+### Swagger UI
+GET {{ResilientClient.Api_HostAddress}}/swagger
