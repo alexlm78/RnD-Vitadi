@@ -1,0 +1,27 @@
+@HealthDashboard.Api_HostAddress = https://localhost:7000
+
+### Health Check - Basic
+GET {{HealthDashboard.Api_HostAddress}}/health
+Accept: application/json
+
+### Health Check - Readiness Probe
+GET {{HealthDashboard.Api_HostAddress}}/health/ready
+Accept: application/json
+
+### Health Check - Liveness Probe
+GET {{HealthDashboard.Api_HostAddress}}/health/live
+Accept: application/json
+
+### Health Check - Detailed Information
+GET {{HealthDashboard.Api_HostAddress}}/api/health/detailed
+Accept: application/json
+
+### Health Check - Status Summary
+GET {{HealthDashboard.Api_HostAddress}}/api/health/status
+Accept: application/json
+
+### Swagger Documentation
+GET {{HealthDashboard.Api_HostAddress}}/swagger
+Accept: text/html
+
+###
