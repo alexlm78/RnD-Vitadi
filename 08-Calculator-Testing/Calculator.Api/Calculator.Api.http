@@ -1,0 +1,86 @@
+### Calculator API Testing
+@baseUrl = http://localhost:5117
+
+### Test Addition
+GET {{baseUrl}}/api/calculator/add?a=10&b=5
+Accept: application/json
+
+###
+
+### Test Subtraction
+GET {{baseUrl}}/api/calculator/subtract?a=10&b=3
+Accept: application/json
+
+###
+
+### Test Multiplication
+GET {{baseUrl}}/api/calculator/multiply?a=4&b=7
+Accept: application/json
+
+###
+
+### Test Division
+GET {{baseUrl}}/api/calculator/divide?a=15&b=3
+Accept: application/json
+
+###
+
+### Test Division by Zero (should return error)
+GET {{baseUrl}}/api/calculator/divide?a=10&b=0
+Accept: application/json
+
+###
+
+### Test Complex Calculation (Addition)
+POST {{baseUrl}}/api/calculator/calculate
+Content-Type: application/json
+
+{
+  "firstOperand": 25.5,
+  "secondOperand": 14.3,
+  "operation": "+"
+}
+
+###
+
+### Test Complex Calculation (Multiplication)
+POST {{baseUrl}}/api/calculator/calculate
+Content-Type: application/json
+
+{
+  "firstOperand": 8.5,
+  "secondOperand": 2.5,
+  "operation": "*"
+}
+
+###
+
+### Test Complex Calculation (Division)
+POST {{baseUrl}}/api/calculator/calculate
+Content-Type: application/json
+
+{
+  "firstOperand": 100,
+  "secondOperand": 4,
+  "operation": "/"
+}
+
+###
+
+### Get Calculation History
+GET {{baseUrl}}/api/calculator/history
+Accept: application/json
+
+###
+
+### Get Limited History (last 10 records)
+GET {{baseUrl}}/api/calculator/history?limit=10
+Accept: application/json
+
+###
+
+### Clear History
+DELETE {{baseUrl}}/api/calculator/history
+Accept: application/json
+
+###
