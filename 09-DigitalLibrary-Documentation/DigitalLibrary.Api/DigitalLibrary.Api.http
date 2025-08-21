@@ -1,0 +1,25 @@
+@DigitalLibrary.Api_HostAddress = http://localhost:5000
+
+### Get Library Information
+GET {{DigitalLibrary.Api_HostAddress}}/api/library/info
+Accept: application/json
+
+###
+
+### Get Library Statistics
+GET {{DigitalLibrary.Api_HostAddress}}/api/library/statistics
+Accept: application/json
+
+###
+
+### Access Swagger UI (Open in browser)
+GET {{DigitalLibrary.Api_HostAddress}}/
+Accept: text/html
+
+###
+
+### Get OpenAPI JSON Schema
+GET {{DigitalLibrary.Api_HostAddress}}/swagger/v1/swagger.json
+Accept: application/json
+
+###
