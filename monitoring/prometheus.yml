@@ -1,0 +1,158 @@
+# Configuración de Prometheus para monitoreo de aplicaciones .NET Core 8
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'dotnet-examples-monitor'
+    environment: 'development'
+
+# Configuración de reglas de alertas
+rule_files:
+  - "alert_rules.yml"
+
+# Configuración de Alertmanager
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Configuración de scraping
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # .NET Core Applications
+  - job_name: 'taskmanager-api'
+    static_configs:
+      - targets: ['host.docker.internal:5001']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+    honor_labels: true
+    params:
+      format: ['prometheus']
+
+  - job_name: 'blog-api'
+    static_configs:
+      - targets: ['host.docker.internal:5002']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'imageprocessor-api'
+    static_configs:
+      - targets: ['host.docker.internal:5003']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'systemmonitor-api'
+    static_configs:
+      - targets: ['host.docker.internal:5004']
+    scrape_interval: 10s  # Más frecuente para métricas de sistema
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'healthdashboard-api'
+    static_configs:
+      - targets: ['host.docker.internal:5005']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'productcatalog-api'
+    static_configs:
+      - targets: ['host.docker.internal:5006']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'resilientclient-api'
+    static_configs:
+      - targets: ['host.docker.internal:5007']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'calculator-api'
+    static_configs:
+      - targets: ['host.docker.internal:5008']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'digitallibrary-api'
+    static_configs:
+      - targets: ['host.docker.internal:5009']
+    scrape_interval: 15s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  # Infrastructure Services
+  - job_name: 'oracle-database'
+    static_configs:
+      - targets: ['oracle-db:1521']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  - job_name: 'elasticsearch'
+    static_configs:
+      - targets: ['elasticsearch:9200']
+    scrape_interval: 30s
+    metrics_path: /_prometheus/metrics
+    scrape_timeout: 10s
+
+  # Health Checks Monitoring
+  - job_name: 'health-checks'
+    static_configs:
+      - targets: 
+        - 'host.docker.internal:5001'
+        - 'host.docker.internal:5002'
+        - 'host.docker.internal:5003'
+        - 'host.docker.internal:5004'
+        - 'host.docker.internal:5005'
+        - 'host.docker.internal:5006'
+        - 'host.docker.internal:5007'
+        - 'host.docker.internal:5008'
+        - 'host.docker.internal:5009'
+    scrape_interval: 30s
+    metrics_path: /health
+    scrape_timeout: 10s
+    params:
+      format: ['prometheus']
+
+  # Custom metrics for specific applications
+  - job_name: 'hangfire-jobs'
+    static_configs:
+      - targets: ['host.docker.internal:5003']  # ImageProcessor with Hangfire
+    scrape_interval: 30s
+    metrics_path: /hangfire/stats
+    scrape_timeout: 10s
+
+# Configuración de almacenamiento
+storage:
+  tsdb:
+    path: /prometheus
+    retention.time: 15d
+    retention.size: 10GB
+
+# Configuración de servidor web
+web:
+  console.libraries: /etc/prometheus/console_libraries
+  console.templates: /etc/prometheus/consoles
+  enable-lifecycle: true
+  enable-admin-api: true

@@ -1,0 +1,177 @@
+# Docker Compose Override para Desarrollo Local
+# Este archivo se aplica automáticamente en desarrollo
+# Contiene configuraciones específicas para el entorno de desarrollo
+
+version: '3.8'
+
+services:
+  # Configuración de desarrollo para Oracle
+  oracle-db:
+    environment:
+      - ORACLE_PWD=DevPassword123
+    volumes:
+      # Montar scripts de inicialización para desarrollo
+      - ./scripts/oracle-init:/opt/oracle/scripts/startup:ro
+      - ./scripts/oracle-setup:/opt/oracle/scripts/setup:ro
+    # Configuración de desarrollo más permisiva
+    command: >
+      bash -c "
+        /opt/oracle/runOracle.sh &
+        sleep 60 &&
+        echo 'Configurando usuarios de desarrollo...' &&
+        sqlplus -S system/DevPassword123@localhost:1521/XE @/opt/oracle/scripts/setup/create-dev-users.sql &&
+        wait
+      "
+
+  # SQL Server con configuración de desarrollo
+  sqlserver-hangfire:
+    environment:
+      - SA_PASSWORD=DevSqlPass123!
+    volumes:
+      # Scripts de inicialización para Hangfire
+      - ./scripts/sqlserver-init:/docker-entrypoint-initdb.d:ro
+
+  # Redis con configuración de desarrollo
+  redis:
+    command: redis-server --appendonly yes --requirepass DevRedisPass123
+    environment:
+      - REDIS_PASSWORD=DevRedisPass123
+
+  # Elasticsearch con configuración de desarrollo
+  elasticsearch:
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"  # Menos memoria para desarrollo
+      - cluster.name=dotnet-examples-dev
+      - node.name=dev-node-1
+
+  # Kibana con configuración de desarrollo
+  kibana:
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - SERVER_NAME=dotnet-examples-kibana-dev
+      - xpack.security.enabled=false
+
+  # Prometheus con configuración de desarrollo
+  prometheus:
+    volumes:
+      - ./monitoring/prometheus-dev.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--log.level=debug'  # Más logging en desarrollo
+
+  # Grafana con configuración de desarrollo
+  grafana:
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=true
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dev-dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/dev-datasources:/etc/grafana/provisioning/datasources:ro
+
+  # Jaeger con configuración de desarrollo
+  jaeger:
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - LOG_LEVEL=debug
+
+  # Servicios adicionales para desarrollo
+
+  # Mailhog para testing de emails
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: dotnet-examples-mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - dotnet-examples-network
+
+  # Adminer para administración de bases de datos
+  adminer:
+    image: adminer:latest
+    container_name: dotnet-examples-adminer
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=oracle-db
+    networks:
+      - dotnet-examples-network
+    depends_on:
+      - oracle-db
+      - sqlserver-hangfire
+
+  # Nginx para reverse proxy (opcional)
+  nginx:
+    image: nginx:alpine
+    container_name: dotnet-examples-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/dev-nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - dotnet-examples-network
+    depends_on:
+      - oracle-db
+      - redis
+      - elasticsearch
+      - kibana
+      - prometheus
+      - grafana
+
+# Configuraciones adicionales para desarrollo
+networks:
+  dotnet-examples-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+
+# Volúmenes con configuración de desarrollo
+volumes:
+  oracle_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/oracle
+  sqlserver_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/sqlserver
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/redis
+  elasticsearch_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/elasticsearch
+  prometheus_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/prometheus
+  grafana_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/grafana

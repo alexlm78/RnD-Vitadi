@@ -157,17 +157,17 @@ dotnet run
 
 ## Orden de Aprendizaje Recomendado
 
-### Nivel Principiante
+### Nivel Uno
 1. **TaskManager** - Fundamentos de configuración y DI
 2. **BlogApi** - Entity Framework y acceso a datos
 3. **ProductCatalog** - Validación y mapeo automático
 
-### Nivel Intermedio
+### Nivel Dos
 4. **SystemMonitor** - Logging estructurado y métricas
 5. **HealthDashboard** - Health checks y diagnósticos
 6. **ImageProcessor** - Background jobs con Hangfire
 
-### Nivel Avanzado
+### Nivel Tres
 7. **ResilientClient** - Patrones de resiliencia
 8. **Calculator** - Testing completo
 9. **DigitalLibrary** - Documentación avanzada
