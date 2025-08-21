@@ -1,0 +1,45 @@
+# Systemd service file for Linux
+# Copy this file to /etc/systemd/system/fileprocessor.service
+# Then run: sudo systemctl enable fileprocessor.service
+
+[Unit]
+Description=File Processor Service
+Documentation=https://github.com/your-org/fileprocessor
+After=network.target
+
+[Service]
+Type=notify
+# Path to the executable - update this to match your deployment path
+ExecStart=/opt/fileprocessor/FileProcessor.Service
+# Working directory - update this to match your deployment path
+WorkingDirectory=/opt/fileprocessor
+# User to run the service as - create a dedicated user for security
+User=fileprocessor
+Group=fileprocessor
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Environment variables
+Environment=DOTNET_ENVIRONMENT=Production
+Environment=ASPNETCORE_URLS=
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/fileprocessor/input /opt/fileprocessor/output /opt/fileprocessor/logs
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fileprocessor
+
+[Install]
+WantedBy=multi-user.target
